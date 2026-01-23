@@ -19,7 +19,11 @@ const getResumeHashes = async () => {
         });
         return hashes
     } catch (e) {
-        console.log('Failed to get resume hashes.')
+        if (e.response.status === 403) {
+            return console.log(`Failed to get resume hashes because of bad token. ${e.response.statusText}`)
+        } else {
+            console.log('Failed to get resume hashes.')
+        }
         console.log(e)
     }
 }
@@ -29,7 +33,7 @@ const isResumeReadyToBeBumped = async (hash) => {
         const { data, headers } = await axios.get('https://hh.ru/applicant/resumes', { headers: getHeaders() })
         setXsrf(headers)
         const $ = cheerio.load(data)
-        return $(`[href*=${hash}]`).eq(0).closest('[data-qa="resume"]').find('button[data-qa*="resume-update-button_actions"]').eq(0).text() === 'Поднять в поиске'
+        return $(`[href*=${hash}][data-qa*="resume-card-link"]`).eq(0).parent().find('span[data-qa*="resume-update-button-text"]').eq(0).text().trim().includes('Поднять')
     } catch (e) {
         console.log('Failed to check resume bump state.')
         console.log(e)
