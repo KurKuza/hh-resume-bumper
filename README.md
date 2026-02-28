@@ -14,7 +14,7 @@ In `resumeBumper.bumpInterval` set desired resume bump interval in MS, useful if
 
 In `activityBoost.checkInterval` set desired vacancy view interval in MS, use this if you need to keep your activity score up to 100
 
-### Multiple accounts (new config format)
+### Multiple accounts
 
 Now the config supports running multiple HH accounts in one process
 
